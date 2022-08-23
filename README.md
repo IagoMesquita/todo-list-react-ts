@@ -1,9 +1,9 @@
 ### Status Projeto
 #### Em andamento :hourglass_flowing_sand:
-Desenvolvendo a boa e velha Todo list, para praticar TypeScripet com React
+Desenvolvendo a boa e velha Todo list, para praticar **TypeScripet** com **React**
 
 # To do list
-Lista de tarefas usando React e TypeScript
+Lista de tarefas usando **React** e **TypeScript**
 
 ## Funcionalidades
 

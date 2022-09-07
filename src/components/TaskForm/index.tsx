@@ -1,4 +1,4 @@
-// import { useState } from "react";
+import React, { useState, ChangeEvent, FormEvent } from "react";
 
 import styles from './TaskForm.module.css';
 
@@ -7,23 +7,35 @@ interface Props {
 }
 
 function TaskForm({ btnText }: Props) {
-  // const [task, setTask] = useState('');
-  // const [taskList, setTaskList] = useState([]);
+  const [id, setId] = useState<number>(0);
+  const [title, setTitle] = useState<string>('');
+  const [difficulty, setDifficuty] = useState<number>();
 
-  // const handleSubmit = (e:) => {
-  //   e.preventDefault();
+  const addTaskHandle = () => {
+    // e.preventDefault();
 
+  };
+
+  // outra opção é criar uma função
+  // const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.name === 'title') {
+  //     setTitle(e.target.value);
+  //   } else {
+  //     setDifficuty(Number(e.target.value));
+  //   }
   // };
 
   return (
-    <form className={ styles.form }>
+    <form onSubmit={ addTaskHandle } className={ styles.form }>
       <label className={ styles.input_container }>
         <span>Título:</span>
         <input
           type="text"
           name="title"
           placeholder="Título da tarefa"
-          // onChange={(e) => setTask(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
+          // onChange={ handleChange }
+          value={ title }
         />
       </label>
 
@@ -33,7 +45,9 @@ function TaskForm({ btnText }: Props) {
           type="text"
           name="difficulty"
           placeholder="Dificuldade da tarefa"
-          // onChange={(e) => setTask(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setDifficuty(Number(e.target.value))}
+          // onChange={ handleChange }
+          value={ difficulty }
         />
       </label>
       <input type="submit" value={btnText} />

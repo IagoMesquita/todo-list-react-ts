@@ -11,6 +11,7 @@ import styles from "./App.module.css";
 
 // interface
 import { ITask } from "./interface/ITask";
+import Modal from "./components/Model/indext";
 
 function App() {
   const [taskList, setTaskList] = useState<ITask[]>([]);
@@ -22,6 +23,7 @@ function App() {
 
   return (
     <div>
+      <Modal children={ <TaskForm  btnText="Editar Tarefa" taskList={taskList}/> }/>
       <Header />
       <main className={styles.main}>
         <div>

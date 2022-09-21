@@ -1,29 +1,52 @@
+import { useState } from "react";
+
 // components
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import TaskForm from "./components/TaskForm";
 import TaskList from "./components/TaskList";
-
-// interface
-import { useState } from "react";
-
-import styles from "./App.module.css";
+import Modal from "./components/Modal";
 
 // interface
 import { ITask } from "./interface/ITask";
-import Modal from "./components/Model/indext";
+
+import styles from "./App.module.css";
 
 function App() {
   const [taskList, setTaskList] = useState<ITask[]>([]);
+  const [taskToUpdate, setToUpdate] = useState<ITask | null>(null);
 
   const deleteTask = (id: number) => {
     const newTask = taskList.filter((task) => task.id !== id);
     setTaskList(newTask);
-  }
+  };
+
+  const hideOrShowModal = (display: boolean) => {
+    const modal = document.querySelector("#modal");
+    if (display) {
+      modal!.classList.remove("hide");
+    } else {
+      modal!.classList.add("hide");
+    }
+  };
+
+  const editTask = (task: ITask) => {
+    hideOrShowModal(true);
+    setToUpdate(task);
+  };
 
   return (
     <div>
-      <Modal children={ <TaskForm  btnText="Editar Tarefa" taskList={taskList}/> }/>
+      <Modal
+        children={
+          <TaskForm
+            btnText="Editar Tarefa"
+            taskList={taskList}
+            setTaskList={setTaskList}
+            taskToUpdate={taskToUpdate}
+          />
+        }
+      />
       <Header />
       <main className={styles.main}>
         <div>
@@ -36,9 +59,10 @@ function App() {
         </div>
         <div>
           <h2>Lista de Tarefas:</h2>
-          <TaskList 
+          <TaskList
             taskList={taskList}
             deleteTask={deleteTask}
+            editTask={editTask}
           />
         </div>
       </main>

@@ -7,12 +7,21 @@ interface Props {
   btnText: string;
   taskList: ITask[];
   setTaskList?: React.Dispatch<React.SetStateAction<ITask[]>>;
+  taskToUpdate?: ITask | null;
 }
 
-function TaskForm({ btnText, taskList, setTaskList }: Props) {
+function TaskForm({ btnText, taskList, setTaskList, taskToUpdate }: Props) {
   const [id, setId] = useState<number>(0);
   const [title, setTitle] = useState<string>('');
-  const [difficulty, setDifficuty] = useState<number>(0);
+  const [difficulty, setDifficulty] = useState<number>(0);
+
+  useEffect(() => {
+    if(taskToUpdate) {
+      setId(taskToUpdate.id);
+      setTitle(taskToUpdate.title);
+      setDifficulty(taskToUpdate.difficulty);
+    }
+  }, [taskToUpdate])
 
   const addTaskHandle = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,10 +33,11 @@ function TaskForm({ btnText, taskList, setTaskList }: Props) {
       difficulty
     };
 
+    // ! forçar o elemento opcional a vir
     setTaskList!([...taskList, newTasK]);
 
     setTitle('');
-    setDifficuty(0);
+    setDifficulty(0);
 
   };
 
@@ -60,7 +70,7 @@ function TaskForm({ btnText, taskList, setTaskList }: Props) {
           type="text"
           name="difficulty"
           placeholder="Dificuldade da tarefa"
-          onChange={(e: ChangeEvent<HTMLInputElement>) => setDifficuty(Number(e.target.value))}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setDifficulty(Number(e.target.value))}
           // onChange={ handleChange }
           value={ difficulty }
         />

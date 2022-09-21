@@ -35,6 +35,17 @@ function App() {
     setToUpdate(task);
   };
 
+  const updateTask = (updatedTask: ITask) => {
+   
+    const updatedItems = taskList.map((task) => {
+      return task.id === updatedTask.id ? updatedTask : task;
+    });
+
+    setTaskList(updatedItems);
+
+    hideOrShowModal(false);
+  };
+
   return (
     <div>
       <Modal
@@ -44,6 +55,7 @@ function App() {
             taskList={taskList}
             setTaskList={setTaskList}
             taskToUpdate={taskToUpdate}
+            handleUpdate={updateTask}
           />
         }
       />

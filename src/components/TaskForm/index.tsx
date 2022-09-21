@@ -1,44 +1,60 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { ITask } from "../../interface/ITask";
 
-import styles from './TaskForm.module.css';
+import styles from "./TaskForm.module.css";
 
 interface Props {
   btnText: string;
   taskList: ITask[];
   setTaskList?: React.Dispatch<React.SetStateAction<ITask[]>>;
   taskToUpdate?: ITask | null;
+  handleUpdate?(updatedTask: ITask): void;
 }
 
-function TaskForm({ btnText, taskList, setTaskList, taskToUpdate }: Props) {
+function TaskForm({
+  btnText,
+  taskList,
+  setTaskList,
+  taskToUpdate,
+  handleUpdate,
+}: Props) {
   const [id, setId] = useState<number>(0);
-  const [title, setTitle] = useState<string>('');
+  const [title, setTitle] = useState<string>("");
   const [difficulty, setDifficulty] = useState<number>(0);
 
   useEffect(() => {
-    if(taskToUpdate) {
+    if (taskToUpdate) {
       setId(taskToUpdate.id);
       setTitle(taskToUpdate.title);
       setDifficulty(taskToUpdate.difficulty);
     }
-  }, [taskToUpdate])
+  }, [taskToUpdate]);
 
   const addTaskHandle = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const id = Math.floor(Math.random() * 1000);
-    const newTasK: ITask = {
-      id,
-      title,
-      difficulty
-    };
+    if (taskToUpdate) {
+      const updatedTasK: ITask = {
+        id,
+        title,
+        difficulty,
+      };
 
-    // ! forçar o elemento opcional a vir
-    setTaskList!([...taskList, newTasK]);
+      handleUpdate!(updatedTasK);
+    } else {
+      const id = Math.floor(Math.random() * 1000);
+      const newTasK: ITask = {
+        id,
+        title,
+        difficulty,
+      };
 
-    setTitle('');
-    setDifficulty(0);
+      // ! forçar o elemento opcional a vir
+      setTaskList!([...taskList, newTasK]);
 
+      setTitle("");
+      setDifficulty(0);
+    }
   };
 
   // outra opção é criar uma função
@@ -51,28 +67,32 @@ function TaskForm({ btnText, taskList, setTaskList, taskToUpdate }: Props) {
   // };
 
   return (
-    <form onSubmit={ addTaskHandle } className={ styles.form }>
-      <label className={ styles.input_container }>
+    <form onSubmit={addTaskHandle} className={styles.form}>
+      <label className={styles.input_container}>
         <span>Título:</span>
         <input
           type="text"
           name="title"
           placeholder="Título da tarefa"
-          onChange={(e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setTitle(e.target.value)
+          }
           // onChange={ handleChange }
-          value={ title }
+          value={title}
         />
       </label>
 
-      <label className={ styles.input_container }>
+      <label className={styles.input_container}>
         <span>Dificuldade:</span>
         <input
           type="text"
           name="difficulty"
           placeholder="Dificuldade da tarefa"
-          onChange={(e: ChangeEvent<HTMLInputElement>) => setDifficulty(Number(e.target.value))}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setDifficulty(Number(e.target.value))
+          }
           // onChange={ handleChange }
-          value={ difficulty }
+          value={difficulty}
         />
       </label>
       <input type="submit" value={btnText} />
